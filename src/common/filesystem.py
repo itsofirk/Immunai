@@ -1,9 +1,7 @@
 import json
 import os
-from config import Settings
+from common import settings
 from errors import ExperimentNotFoundError
-
-settings = Settings()
 
 
 def get_raw_data_path(experiment_id):
