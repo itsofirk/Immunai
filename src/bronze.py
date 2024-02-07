@@ -8,9 +8,12 @@ def _is_relevant(entry):
 
 
 def _extract_relevant_fields(entry):
+    if "cell_response" not in entry:
+        print(f"Missing cell_response for entry: {entry}")
+        entry["cell_response"] = 0
     return {
         "cell_type": entry["cell_type"]["name"],
-        "cell_response": entry["cell_response"]
+        "cell_response": entry.get("cell_response", 0)
     }
 
 
