@@ -4,16 +4,24 @@ from common import settings
 from errors import ExperimentNotFoundError
 
 
+def _get_local_json_file_path(directory, experiment_id):
+    return os.path.join(directory, f'{experiment_id}.json')
+
+
 def get_raw_data_path(experiment_id):
-    return os.path.join(settings.raw_data_dir, f'{experiment_id}.json')
+    return _get_local_json_file_path(settings.raw_data_dir, experiment_id)
 
 
-def get_processed_data_path(experiment_id):
-    return os.path.join(settings.processed_data_dir, f'{experiment_id}.json')
+def get_clean_data_path(experiment_id):
+    return _get_local_json_file_path(settings.clean_data_dir, experiment_id)
 
 
-def get_validated_data_path(experiment_id):
-    return os.path.join(settings.validated_data_dir, f'{experiment_id}.json')
+def get_hypothesis_data_path(experiment_id):
+    return _get_local_json_file_path(settings.hypothesis_dir, experiment_id)
+
+
+def get_conclusion_data_path(experiment_id):
+    return _get_local_json_file_path(settings.conclusion_dir, experiment_id)
 
 
 def load_json(json_file_path):
