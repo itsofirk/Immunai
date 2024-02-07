@@ -1,6 +1,7 @@
-import os
 import json
+import os
 from config import Settings
+from errors import ExperimentNotFoundError
 
 settings = Settings()
 
@@ -18,5 +19,8 @@ def get_validated_data_path(experiment_id):
 
 
 def get_raw_data(experiment_id):
-    with open(get_raw_data_path(experiment_id), 'r') as input_file:
-        return json.load(input_file)
+    try:
+        with open(get_raw_data_path(experiment_id), 'r') as input_file:
+            return json.load(input_file)
+    except FileNotFoundError:
+        raise ExperimentNotFoundError("File not found. Please check the experiment ID and try again.")
