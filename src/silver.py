@@ -3,67 +3,62 @@ from common.filesystem import get_clean_data_path, load_json, dump_json, get_hyp
 NEURON = "Neuron"
 
 
-def get_neuron_stats(data):
+def collect_stats(data):
     """
-    Get average, min, max and number of neuron cells response from the data
+    Returns the average neuron response and the number of neurons, the highest cell response, and the lowest neuron response
     """
-    neuron_response_list = []
+    neuron_response_sum = 0
+    neuron_number = 0
+    lowest_neuron_response = float("inf")
+    highest_cell_response = float("-inf")
     for entry in data:
         if entry["cell_type"] == NEURON:
-            neuron_response_list.append(entry["cell_response"])
-    return sum(neuron_response_list) / len(neuron_response_list), \
-        min(neuron_response_list), \
-        max(neuron_response_list), \
-        len(neuron_response_list)
+            neuron_response_sum += entry["cell_response"]
+            neuron_number += 1
+            if entry["cell_response"] < lowest_neuron_response:
+                lowest_neuron_response = entry["cell_response"]
+        else:
+            if entry["cell_response"] > highest_cell_response:
+                highest_cell_response = entry["cell_response"]
+
+    return (neuron_response_sum,
+            neuron_number,
+            highest_cell_response,
+            lowest_neuron_response)
+
+
+def check_hypothesis(data):
+    """
+    Check whether non-neuron cells are above average or below the lowest neuron response
+    """
+    # Collect stats
+    avg_neuron_response, highest_cell_response, lowest_neuron_response, neuron_number = collect_stats(data)
+
+    # Hypothesis check
+    if neuron_number == 0:
+        return False, False
+    average = avg_neuron_response / neuron_number
+
+    is_above_average = average > highest_cell_response
+    is_below_min = lowest_neuron_response > highest_cell_response
+
+    return is_below_min, is_above_average
 
 
 def validate_hypothesis(experiment_id):
     input_file_path = get_clean_data_path(experiment_id)
     output_file_path = get_hypothesis_data_path(experiment_id)
+
     data = load_json(input_file_path)
 
-    # Get average, min, max and number of neuron cells
-    neuron_avg, neuron_min, neuron_max, neuron_count = get_neuron_stats(data)
+    result = check_hypothesis(data)
 
-    # Check if the hypothesis is true
-    above_avg_count, above_max_count, below_min_count = check_hypothesis(data, neuron_avg, neuron_max, neuron_min)
-
-    results = prepare_results(above_avg_count, above_max_count, below_min_count, data, neuron_avg, neuron_count,
-                              neuron_max, neuron_min)
-
-    dump_json(output_file_path, results)
-
-
-def prepare_results(above_avg_count, above_max_count, below_min_count, data, neuron_avg, neuron_count, neuron_max,
-                    neuron_min):
-    return {
-        "below_min_count": below_min_count,
-        "above_avg_count": above_avg_count,
-        "above_max_count": above_max_count,
-        "stats": {
-            "neuron_min": neuron_min,
-            "neuron_avg": neuron_avg,
-            "neuron_max": neuron_max,
-            "neuron_count": neuron_count,
-            "total_count": len(data)
-        }
+    results = {
+        "below_min": result[0],
+        "below_avg": result[1]
     }
 
-
-def check_hypothesis(data, neuron_avg, neuron_max, neuron_min):
-    # Iterate over all non-neuron cells and check if they are above the average
-    above_avg_count = 0
-    below_min_count = 0
-    above_max_count = 0
-    for entry in data:
-        if entry["cell_type"] != NEURON:
-            if entry["cell_response"] < neuron_min:
-                below_min_count += 1
-            elif entry["cell_response"] > neuron_avg:
-                above_avg_count += 1
-            elif entry["cell_response"] > neuron_max:
-                above_max_count += 1
-    return above_avg_count, above_max_count, below_min_count
+    dump_json(output_file_path, results)
 
 
 if __name__ == "__main__":
