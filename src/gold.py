@@ -1,7 +1,12 @@
+import logging
 from common.filesystem import load_json
+
+logger = logging.getLogger(__name__)
 
 
 def summarize_hypothesis_accuracy(hypothesis_data_files):
+    logger.info("Summarizing hypothesis accuracy...")
+
     total_experiments = 0
     below_min = 0
     below_avg = 0
@@ -17,6 +22,7 @@ def summarize_hypothesis_accuracy(hypothesis_data_files):
     below_avg_accuracy = (below_avg / total_experiments) * 100
     print(f"Hypothesis is true for: {below_min_accuracy}% for {total_experiments} experiments.")
     print(f"Hypothesis is true for: {below_avg_accuracy}% of experiments looking on the average response for {total_experiments} experiments.")
+    logger.info("Done!")
 
 
 __all__ = [summarize_hypothesis_accuracy]
