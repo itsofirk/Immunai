@@ -1,4 +1,4 @@
-from filesystem import get_raw_data_path, get_processed_data_path, load_json, dump_json
+from common.filesystem import get_raw_data_path, get_processed_data_path, load_json, dump_json
 
 
 def process_experiment(experiment_id):
