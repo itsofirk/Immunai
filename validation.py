@@ -2,7 +2,7 @@ from bronze import process_raw_data
 from silver import validate_hypothesis
 from gold import summarize_hypothesis_accuracy
 
-VALIDATED_DATA_DIR = "../resources/validated_data"
+VALIDATED_DATA_DIR = "resources/validated_data"
 
 experiments_files = [
     "EXP_001",
