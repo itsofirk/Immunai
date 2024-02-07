@@ -36,6 +36,7 @@ def check_hypothesis(data):
 
     # Hypothesis check
     if neuron_number == 0:
+        # TODO: add setting for this
         return False, False
     average = avg_neuron_response / neuron_number
 
