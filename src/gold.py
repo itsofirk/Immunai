@@ -19,9 +19,4 @@ def summarize_hypothesis_accuracy(hypothesis_data_files):
     print(f"Hypothesis is true for: {below_avg_accuracy}% of experiments looking on the average response for {total_experiments} experiments.")
 
 
-if __name__ == "__main__":
-    import os
-
-    results_path = '../resources/validated_data'
-    hypothesis_data_files = [os.path.join(results_path, filename) for filename in os.listdir(results_path)]
-    summarize_hypothesis_accuracy(hypothesis_data_files)
+__all__ = [summarize_hypothesis_accuracy]

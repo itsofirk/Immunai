@@ -24,6 +24,4 @@ def process_raw_data(experiment_id):
     dump_json(output_file_path, necessary_data)
 
 
-if __name__ == "__main__":
-    _experiment_id = 'EXP_001'
-    process_raw_data(_experiment_id)
+__all__ = [process_raw_data]

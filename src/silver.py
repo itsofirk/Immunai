@@ -62,6 +62,4 @@ def validate_hypothesis(experiment_id):
     dump_json(output_file_path, results)
 
 
-if __name__ == "__main__":
-    _experiment_id = 'EXP_001'
-    validate_hypothesis(_experiment_id)
+__all__ = [validate_hypothesis]
