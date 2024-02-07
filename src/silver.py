@@ -3,7 +3,7 @@ from common.filesystem import get_clean_data_path, load_json, dump_json, get_hyp
 NEURON = "Neuron"
 
 
-def collect_stats(data):
+def _collect_stats(data):
     """
     Returns the average neuron response and the number of neurons, the highest cell response, and the lowest neuron response
     """
@@ -27,12 +27,12 @@ def collect_stats(data):
             lowest_neuron_response)
 
 
-def check_hypothesis(data):
+def _check_hypothesis(data):
     """
     Check whether non-neuron cells are above average or below the lowest neuron response
     """
     # Collect stats
-    avg_neuron_response, highest_cell_response, lowest_neuron_response, neuron_number = collect_stats(data)
+    avg_neuron_response, highest_cell_response, lowest_neuron_response, neuron_number = _collect_stats(data)
 
     # Hypothesis check
     if neuron_number == 0:
@@ -52,7 +52,7 @@ def validate_hypothesis(experiment_id):
 
     data = load_json(input_file_path)
 
-    result = check_hypothesis(data)
+    result = _check_hypothesis(data)
 
     results = {
         "below_min": result[0],
