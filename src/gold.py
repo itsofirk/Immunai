@@ -21,7 +21,7 @@ def summarize_hypothesis_accuracy(hypothesis_data_files):
     below_min_accuracy = (below_min / total_experiments) * 100
     below_avg_accuracy = (below_avg / total_experiments) * 100
     print(f"Hypothesis is true for: {below_min_accuracy}% for {total_experiments} experiments.")
-    print(f"Hypothesis is true for: {below_avg_accuracy}% of experiments looking on the average response for {total_experiments} experiments.")
+    print(f"Hypothesis is true for: {below_avg_accuracy}% looking on the average response for {total_experiments} experiments.")
     logger.info("Done!")
 
 
