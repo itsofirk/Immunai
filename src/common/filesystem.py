@@ -1,7 +1,7 @@
 import json
 import os
 from common import settings
-from errors import ExperimentNotFoundError
+from common.errors import ExperimentNotFoundError
 
 
 def _get_local_json_file_path(directory, experiment_id):
