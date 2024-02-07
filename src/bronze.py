@@ -1,4 +1,4 @@
-from common.filesystem import get_raw_data_path, get_processed_data_path, load_json, dump_json
+from common.filesystem import get_raw_data_path, get_clean_data_path, load_json, dump_json
 
 
 def process_experiment(experiment_id):
@@ -16,7 +16,7 @@ def process_experiment(experiment_id):
 
             necessary_data.append(relevant_data)
 
-    output_file_path = get_processed_data_path(experiment_id)
+    output_file_path = get_clean_data_path(experiment_id)
     dump_json(output_file_path, necessary_data)
 
 
