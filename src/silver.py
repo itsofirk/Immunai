@@ -1,6 +1,8 @@
+import logging
 from common.filesystem import get_clean_data_path, load_json, dump_json, get_hypothesis_data_path
 
 NEURON = "Neuron"
+logger = logging.getLogger(__name__)
 
 
 def _collect_stats(data):
@@ -47,19 +49,24 @@ def _check_hypothesis(data):
 
 
 def validate_hypothesis(experiment_id):
+    logger.info(f"Validating hypothesis for experiment {experiment_id}...")
     input_file_path = get_clean_data_path(experiment_id)
     output_file_path = get_hypothesis_data_path(experiment_id)
 
+    logger.debug(f"Loading data from {input_file_path}...")
     data = load_json(input_file_path)
 
+    logger.debug(f"Checking hypothesis...")
     result = _check_hypothesis(data)
 
+    logger.debug(f"Dumping data to {output_file_path}...")
     results = {
         "below_min": result[0],
         "below_avg": result[1]
     }
 
     dump_json(output_file_path, results)
+    logger.info(f"Done!")
 
 
 __all__ = [validate_hypothesis]

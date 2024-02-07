@@ -6,7 +6,7 @@ settings = Settings()
 logger = logging.getLogger()
 
 console_handler = logging.StreamHandler()
-fmt = logging.Formatter("[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s")
+fmt = logging.Formatter("[%(asctime)s] %(levelname)s [%(name)s:%(lineno)d] %(message)s")
 console_handler.setFormatter(fmt)
 
 logger.setLevel(settings.logging_level)
